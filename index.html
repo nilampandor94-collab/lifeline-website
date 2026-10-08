@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LifeLine – Blood Donation Website</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--red:#c4122f;--red-d:#8e0c22;--ink:#1b1220;--mute:#6b5f6e;--bg:#fff7f7;--card:#fff;--line:#f0d9dc;--ok:#1b8a5a}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+h1,h2,h3{font-family:'Bricolage Grotesque','DM Sans',sans-serif;line-height:1.15}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.wrap{max-width:1100px;margin:auto;padding:0 20px}
+header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{font-family:'Bricolage Grotesque';font-weight:800;font-size:1.35rem;text-decoration:none;color:var(--red);display:flex;gap:8px;align-items:center}
+.menu{display:flex;gap:6px;align-items:center;list-style:none}
+.menu a{text-decoration:none;padding:8px 11px;border-radius:8px;font-weight:500;font-size:.95rem}
+.menu a:hover{background:var(--bg)}
+#burger{display:none;background:none;border:0;font-size:1.6rem;cursor:pointer}
+.btn{display:inline-block;border:0;cursor:pointer;font:inherit;font-weight:700;padding:11px 20px;border-radius:10px;background:var(--red);color:#fff;text-decoration:none;transition:background .2s,transform .1s}
+.btn:hover{background:var(--red-d)}.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--red);border:2px solid var(--red)}
+.btn.ghost:hover{background:var(--red);color:#fff}
+.btn.sm{padding:7px 14px;font-size:.9rem}
+.hero{color:#fff;background:linear-gradient(115deg,rgba(60,4,16,.93),rgba(196,18,47,.82)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='140'%3E%3Cpath d='M60 12C60 12 22 62 22 90a38 38 0 0 0 76 0C98 62 60 12 60 12z' fill='%23ffffff' fill-opacity='.07'/%3E%3C/svg%3E");padding:84px 0 70px;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+.hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;margin-bottom:16px}
+.hero p{font-size:1.1rem;max-width:520px;opacity:.93;margin-bottom:26px}
+.hero .btn{background:#fff;color:var(--red)}.hero .btn:hover{background:#ffe3e7}
+.hero .btn.ghost{background:transparent;color:#fff;border-color:#fff}
+.hero .btn.ghost:hover{background:#fff;color:var(--red)}
+.hero .row{display:flex;gap:12px;flex-wrap:wrap}
+.pulse{width:100%;max-width:340px;justify-self:center}
+.beat{stroke-dasharray:520;stroke-dashoffset:520;animation:draw 2.4s ease-out forwards,loop 3s 2.4s linear infinite}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes loop{0%{opacity:1}50%{opacity:.45}100%{opacity:1}}
+.stats{display:flex;gap:30px;margin-top:34px;flex-wrap:wrap}
+.stats b{display:block;font:800 1.7rem 'Bricolage Grotesque'}
+.stats span{font-size:.85rem;opacity:.85}
+section{padding:68px 0}
+section.alt{background:#fff}
+.title{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:800;margin-bottom:8px}
+.sub{color:var(--mute);max-width:640px;margin-bottom:30px}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card h3{font-size:1.15rem;margin-bottom:6px}
+.card p{color:var(--mute);font-size:.95rem}
+.ico{font-size:1.8rem;margin-bottom:8px}
+.groups{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.gbtn{width:64px;height:64px;border-radius:50%;border:2px solid var(--red);background:#fff;color:var(--red);font:800 1.15rem 'Bricolage Grotesque';cursor:pointer;transition:.15s}
+.gbtn:hover,.gbtn.on{background:var(--red);color:#fff}
+.compat{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.chips span{display:inline-block;background:#ffe9ec;color:var(--red-d);font-weight:700;border-radius:20px;padding:3px 12px;margin:3px 4px 0 0;font-size:.9rem}
+.elig{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+label{font-weight:700;font-size:.9rem}
+input,select,textarea{font:inherit;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--red)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.res{padding:14px 16px;border-radius:10px;font-weight:500;margin-top:6px}
+.res.good{background:#e3f6ec;color:var(--ok)}.res.bad{background:#ffe3e7;color:var(--red-d)}
+.filters{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;margin-bottom:20px;align-items:end}
+.donor{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.dleft{display:flex;gap:14px;align-items:center}
+.bg{width:54px;height:54px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font:800 1.15rem 'Bricolage Grotesque';flex:none}
+.tag{font-size:.78rem;font-weight:700;padding:2px 9px;border-radius:12px;background:#e3f6ec;color:var(--ok);margin-left:6px}
+.tag.p{background:#fff2d6;color:#9a6200}
+.camp{display:flex;gap:16px;align-items:center}
+.date{background:var(--red);color:#fff;border-radius:12px;text-align:center;padding:8px 14px;font:800 1.5rem 'Bricolage Grotesque';line-height:1.1;flex:none}
+.date small{display:block;font-size:.75rem;font-weight:500}
+.camp .btn{margin-left:auto}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.info p{margin-bottom:12px}
+footer{background:var(--ink);color:#d9ccdb;text-align:center;padding:26px 0;font-size:.9rem}
+.modal{position:fixed;inset:0;background:rgba(27,18,32,.6);display:none;place-items:center;z-index:50;padding:16px}
+.modal.open{display:grid}
+.box{background:#fff;border-radius:16px;padding:26px;width:100%;max-width:440px;max-height:90vh;overflow:auto}
+.box.wide{max-width:760px}
+.box h3{font-size:1.4rem;margin-bottom:14px}
+.tabs{display:flex;gap:6px;margin-bottom:16px}
+.tabs button{flex:1;padding:9px;border:0;border-radius:8px;background:var(--bg);font:inherit;font-weight:700;cursor:pointer}
+.tabs button.on{background:var(--red);color:#fff}
+.x{float:right;background:none;border:0;font-size:1.5rem;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:.92rem;margin-bottom:18px}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:12px;z-index:60;transition:transform .3s;max-width:90%}
+#toast.show{transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;color:var(--mute);padding:26px;border:2px dashed var(--line);border-radius:14px}
+@media(max-width:820px){
+ #burger{display:block}
+ .menu{display:none;position:absolute;top:62px;left:0;right:0;background:#fff;flex-direction:column;align-items:stretch;padding:12px 20px;border-bottom:1px solid var(--line)}
+ .menu.open{display:flex}
+ .hero .wrap,.elig,.contact,.compat{grid-template-columns:1fr}
+ .filters{grid-template-columns:1fr}.two{grid-template-columns:1fr}
+ .camp{flex-wrap:wrap}.camp .btn{margin-left:0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.beat{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+ <a class="logo" href="#home">🩸 LifeLine</a>
+ <button id="burger" aria-label="Menu" onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+ <ul class="menu" id="menu">
+  <li><a href="#about">About</a></li><li><a href="#groups">Blood groups</a></li>
+  <li><a href="#eligibility">Eligibility</a></li><li><a href="#find">Find donors</a></li>
+  <li><a href="#camps">Camps</a></li><li><a href="#contact">Contact</a></li>
+  <li id="authSlot"></li>
+ </ul></nav></div></header>
+
+<section class="hero" id="home"><div class="wrap">
+ <div>
+  <h1>One donation can save three lives.</h1>
+  <p>Register as a donor, find a matching blood group in your city, or join a donation camp near you. Every verified donor is checked by our admin team.</p>
+  <div class="row"><a class="btn" href="#register">Become a donor</a><a class="btn ghost" href="#find">Find blood</a></div>
+  <div class="stats"><div><b id="sDonors">0</b><span>Verified donors</span></div><div><b>8</b><span>Blood groups</span></div><div><b id="sCamps">0</b><span>Upcoming camps</span></div></div>
+ </div>
+ <svg class="pulse" viewBox="0 0 340 340" aria-hidden="true">
+  <path d="M170 20C170 20 62 150 62 224a108 108 0 0 0 216 0C278 150 170 20 170 20z" fill="#fff" fill-opacity=".14" stroke="#fff" stroke-width="3"/>
+  <path class="beat" d="M80 230h50l20-52 32 98 24-66 14 20h40" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+ </svg>
+</div></section>
+
+<section id="about"><div class="wrap">
+ <h2 class="title">Why blood donation matters</h2>
+ <p class="sub">Blood cannot be made in a lab. It can only come from people who choose to give. Hospitals need a steady supply for surgeries, accidents, cancer care and mothers in childbirth.</p>
+ <div class="grid">
+  <div class="card"><div class="ico">❤️</div><h3>Saves lives</h3><p>A single unit is separated into red cells, plasma and platelets, so it can help up to three patients.</p></div>
+  <div class="card"><div class="ico">⏱️</div><h3>Quick and safe</h3><p>The donation itself takes about 10 minutes. New, sterile equipment is used for every donor.</p></div>
+  <div class="card"><div class="ico">🩺</div><h3>Free health check</h3><p>Before donating you get your pulse, blood pressure, temperature and haemoglobin checked.</p></div>
+  <div class="card"><div class="ico">🔁</div><h3>Your body recovers</h3><p>The body replaces the fluid within hours and the red cells within a few weeks.</p></div>
+ </div>
+</div></section>
+
+<section class="alt" id="groups"><div class="wrap">
+ <h2 class="title">Know your blood group</h2>
+ <p class="sub">Select a blood group to see who can give to it and who it can receive from.</p>
+ <div class="groups" id="gBtns"></div>
+ <div class="compat">
+  <div class="card"><h3>Can receive from</h3><div class="chips" id="recv"></div></div>
+  <div class="card"><h3>Can donate to</h3><div class="chips" id="give"></div></div>
+ </div>
+</div></section>
+
+<section id="eligibility"><div class="wrap elig">
+ <div>
+  <h2 class="title">Can I donate?</h2>
+  <p class="sub">Answer four quick questions. This is a basic guide. The doctor at the camp makes the final decision.</p>
+  <div class="card">
+   <div class="two"><div class="field"><label for="eAge">Age (years)</label><input id="eAge" type="number" min="1" max="100"></div>
+   <div class="field"><label for="eWt">Weight (kg)</label><input id="eWt" type="number" min="1" max="200"></div></div>
+   <div class="field"><label for="eGap">Last donation</label><select id="eGap"><option value="never">Never donated</option><option value="ok">More than 3 months ago</option><option value="no">Less than 3 months ago</option></select></div>
+   <div class="field"><label for="eHealth">Today I feel</label><select id="eHealth"><option value="well">Healthy, no fever or infection</option><option value="ill">Unwell, fever, or on antibiotics</option></select></div>
+   <button class="btn" onclick="checkElig()">Check eligibility</button>
+   <div id="eRes"></div>
+  </div>
+ </div>
+ <div class="card"><h3>Basic donor rules</h3><p style="margin:10px 0">• Age 18 to 65 years</p><p style="margin-bottom:10px">• Weight at least 50 kg</p><p style="margin-bottom:10px">• Haemoglobin at least 12.5 g/dL</p><p style="margin-bottom:10px">• At least 3 months since the last donation</p><p>• No fever, infection or recent tattoo or surgery</p></div>
+</div></section>
+
+<section class="alt" id="find"><div class="wrap">
+ <h2 class="title">Find a blood donor</h2>
+ <p class="sub">Only admin-verified donors appear here. Log in to send a contact request.</p>
+ <div class="filters">
+  <div class="field" style="margin:0"><label for="fG">Blood group</label><select id="fG"></select></div>
+  <div class="field" style="margin:0"><label for="fC">City or area</label><input id="fC" placeholder="e.g. Gandhinagar" list="cities"><datalist id="cities"></datalist></div>
+  <button class="btn" onclick="renderDonors()">Search</button>
+ </div>
+ <div id="donorList" class="grid" style="grid-template-columns:1fr"></div>
+</div></section>
+
+<section id="register"><div class="wrap elig">
+ <div>
+  <h2 class="title">Register as a donor</h2>
+  <p class="sub">Your details are saved as pending. Once an admin verifies you, you appear in donor search.</p>
+  <div class="card"><h3>What happens next</h3><p style="margin-top:8px">1. You submit this form.<br>2. Admin checks your details.<br>3. You are marked Verified and people can request your contact.</p></div>
+ </div>
+ <form class="card" id="regForm" onsubmit="return regDonor(event)">
+  <div class="field"><label for="rName">Full name</label><input id="rName" required></div>
+  <div class="two"><div class="field"><label for="rAge">Age</label><input id="rAge" type="number" min="18" max="65" required></div>
+  <div class="field"><label for="rG">Blood group</label><select id="rG" required></select></div></div>
+  <div class="two"><div class="field"><label for="rCity">City / area</label><input id="rCity" required></div>
+  <div class="field"><label for="rPh">Mobile number</label><input id="rPh" type="tel" pattern="[0-9]{10}" placeholder="10 digits" required></div></div>
+  <label style="display:flex;gap:8px;font-weight:400;margin-bottom:14px"><input type="checkbox" required style="width:auto"> I confirm that my details are correct and I am willing to donate.</label>
+  <button class="btn" type="submit">Submit registration</button>
+ </form>
+</div></section>
+
+<section class="alt" id="camps"><div class="wrap">
+ <h2 class="title">Blood donation camps</h2>
+ <p class="sub">Pick a camp and reserve your slot.</p>
+ <div class="filters" style="grid-template-columns:1fr auto"><div class="field" style="margin:0"><label for="cF">Filter by city</label><select id="cF" onchange="renderCamps()"><option value="">All cities</option></select></div><span></span></div>
+ <div id="campList" class="grid" style="grid-template-columns:1fr"></div>
+</div></section>
+
+<section id="contact"><div class="wrap contact">
+ <div class="info">
+  <h2 class="title">Contact us</h2>
+  <p class="sub">Need blood urgently, or want to host a camp? Write to us.</p>
+  <p>📍 LifeLine Blood Network, Gandhinagar, Gujarat</p>
+  <p>📞 +91 98765 43210</p>
+  <p>✉️ help@lifeline-blood.example</p>
+  <p>🚨 Emergency helpline: 104</p>
+ </div>
+ <form class="card" onsubmit="return sendMsg(event)">
+  <div class="field"><label for="mN">Your name</label><input id="mN" required></div>
+  <div class="field"><label for="mE">Email</label><input id="mE" type="email" required></div>
+  <div class="field"><label for="mM">Message</label><textarea id="mM" rows="4" required></textarea></div>
+  <button class="btn" type="submit">Send message</button>
+ </form>
+</div></section>
+
+<footer><div class="wrap">🩸 LifeLine · College frontend project · Donate blood, save lives</div></footer>
+
+<!-- Login modal -->
+<div class="modal" id="authModal"><div class="box">
+ <button class="x" onclick="closeM('authModal')" aria-label="Close">×</button>
+ <h3 id="authTitle">Log in</h3>
+ <div class="tabs"><button id="tabU" class="on" onclick="setTab('user')">User</button><button id="tabA" onclick="setTab('admin')">Admin</button></div>
+ <form onsubmit="return doAuth(event)">
+  <div class="field" id="fName" style="display:none"><label for="aName">Full name</label><input id="aName"></div>
+  <div class="field"><label for="aUser" id="lUser">Email</label><input id="aUser" required></div>
+  <div class="field"><label for="aPass">Password</label><input id="aPass" type="password" minlength="4" required></div>
+  <button class="btn" style="width:100%" type="submit" id="authBtn">Log in</button>
+ </form>
+ <p style="margin-top:14px;font-size:.92rem;color:var(--mute)" id="authSwitch"></p>
+ <p id="adminHint" style="display:none;margin-top:10px;font-size:.85rem;color:var(--mute)">Demo admin: <b>admin</b> / <b>admin123</b></p>
+</div></div>
+
+<!-- Contact request modal -->
+<div class="modal" id="reqModal"><div class="box">
+ <button class="x" onclick="closeM('reqModal')" aria-label="Close">×</button>
+ <h3>Send contact request</h3>
+ <p id="reqTo" style="margin-bottom:14px;color:var(--mute)"></p>
+ <form onsubmit="return sendReq(event)">
+  <div class="field"><label for="qPh">Your mobile number</label><input id="qPh" type="tel" pattern="[0-9]{10}" required></div>
+  <div class="field"><label for="qMsg">Message</label><textarea id="qMsg" rows="3" required>I need blood urgently. Please contact me.</textarea></div>
+  <button class="btn" style="width:100%" type="submit">Send request</button>
+ </form>
+</div></div>
+
+<!-- Admin panel -->
+<div class="modal" id="adminModal"><div class="box wide">
+ <button class="x" onclick="closeM('adminModal')" aria-label="Close">×</button>
+ <h3>Admin verification</h3>
+ <h4 style="margin-bottom:6px">Donor registrations</h4>
+ <div class="scroll"><table><thead><tr><th>Name</th><th>Group</th><th>City</th><th>Phone</th><th>Status</th><th>Action</th></tr></thead><tbody id="aDonors"></tbody></table></div>
+ <h4 style="margin-bottom:6px">Contact requests</h4>
+ <div class="scroll"><table><thead><tr><th>From</th><th>Phone</th><th>To donor</th><th>Message</th></tr></thead><tbody id="aReqs"></tbody></table></div>
+</div></div>
+
+<div id="toast" role="status"></div>
+
+<script>
+const GROUPS=['A+','A-','B+','B-','AB+','AB-','O+','O-'];
+const CAN_RECEIVE={'A+':['A+','A-','O+','O-'],'A-':['A-','O-'],'B+':['B+','B-','O+','O-'],'B-':['B-','O-'],'AB+':GROUPS,'AB-':['A-','B-','AB-','O-'],'O+':['O+','O-'],'O-':['O-']};
+const CAMPS=[
+ {d:'12',m:'Oct',name:'City Hospital Mega Camp',city:'Gandhinagar',place:'Civil Hospital, Sector 12',time:'9 AM – 4 PM'},
+ {d:'18',m:'Oct',name:'College Blood Drive',city:'Ahmedabad',place:'Gujarat University Auditorium',time:'10 AM – 3 PM'},
+ {d:'26',m:'Oct',name:'Red Cross Community Camp',city:'Surat',place:'Red Cross Bhavan, Ring Road',time:'9 AM – 2 PM'},
+ {d:'03',m:'Nov',name:'Festival Donation Day',city:'Gandhinagar',place:'Town Hall, Sector 17',time:'8 AM – 1 PM'}
+];
+const SEED=[
+ {id:1,name:'Rahul Patel',age:24,group:'O+',city:'Gandhinagar',phone:'9876500001',status:'verified'},
+ {id:2,name:'Priya Shah',age:28,group:'B+',city:'Ahmedabad',phone:'9876500002',status:'verified'},
+ {id:3,name:'Karan Mehta',age:31,group:'A+',city:'Gandhinagar',phone:'9876500003',status:'verified'},
+ {id:4,name:'Neha Joshi',age:22,group:'O-',city:'Surat',phone:'9876500004',status:'verified'},
+ {id:5,name:'Vivek Desai',age:35,group:'AB+',city:'Ahmedabad',phone:'9876500005',status:'verified'}
+];
+const $=id=>document.getElementById(id);
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let donors=load('ll_donors',null)||SEED; save('ll_donors',donors);
+let users=load('ll_users',[]), reqs=load('ll_reqs',[]), session=load('ll_session',null);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),2800)}
+function openM(id){$(id).classList.add('open')}
+function closeM(id){$(id).classList.remove('open')}
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'))});
+document.querySelectorAll('#menu a').forEach(a=>a.addEventListener('click',()=>$('menu').classList.remove('open')));
+
+/* setup selects */
+$('fG').innerHTML='<option value="">All groups</option>'+GROUPS.map(g=>`<option>${g}</option>`).join('');
+$('rG').innerHTML='<option value="">Select</option>'+GROUPS.map(g=>`<option>${g}</option>`).join('');
+$('gBtns').innerHTML=GROUPS.map(g=>`<button class="gbtn" onclick="showGroup('${g}')">${g}</button>`).join('');
+function showGroup(g){
+ document.querySelectorAll('.gbtn').forEach(b=>b.classList.toggle('on',b.textContent===g));
+ $('recv').innerHTML=CAN_RECEIVE[g].map(x=>`<span>${x}</span>`).join('');
+ $('give').innerHTML=GROUPS.filter(x=>CAN_RECEIVE[x].includes(g)).map(x=>`<span>${x}</span>`).join('');
+}
+showGroup('O+');
+
+/* eligibility */
+function checkElig(){
+ const a=+$('eAge').value,w=+$('eWt').value,gap=$('eGap').value,h=$('eHealth').value,r=[];
+ if(!a||!w){$('eRes').innerHTML='<div class="res bad">Please enter your age and weight.</div>';return}
+ if(a<18||a>65)r.push('Donors must be between 18 and 65 years old.');
+ if(w<50)r.push('Weight must be at least 50 kg.');
+ if(gap==='no')r.push('Wait at least 3 months after your last donation.');
+ if(h==='ill')r.push('Please wait until you are fully recovered.');
+ $('eRes').innerHTML=r.length?`<div class="res bad"><b>Not eligible right now.</b><br>${r.join('<br>')}</div>`:'<div class="res good"><b>You look eligible to donate.</b> Register as a donor or join a camp below.</div>';
+}
+
+/* donors */
+function renderDonors(){
+ const g=$('fG').value,c=$('fC').value.trim().toLowerCase();
+ const list=donors.filter(d=>d.status==='verified'&&(!g||d.group===g)&&(!c||d.city.toLowerCase().includes(c)));
+ $('donorList').innerHTML=list.length?list.map(d=>`
+  <div class="card donor"><div class="dleft"><div class="bg">${d.group}</div>
+  <div><h3 style="margin:0">${esc(d.name)}<span class="tag">Verified</span></h3><p>${esc(d.city)} · Age ${d.age}</p></div></div>
+  <button class="btn sm" onclick="askContact(${d.id})">Contact request</button></div>`).join('')
+  :'<div class="empty">No verified donors match your search. Try another group or area.</div>';
+ const cities=[...new Set(donors.filter(d=>d.status==='verified').map(d=>d.city))];
+ $('cities').innerHTML=cities.map(x=>`<option value="${esc(x)}">`).join('');
+ $('sDonors').textContent=donors.filter(d=>d.status==='verified').length;
+}
+let reqTarget=null;
+function askContact(id){
+ if(!session||session.role!=='user'){toast('Please log in as a user first.');setTab('user');openAuth('login');return}
+ reqTarget=donors.find(d=>d.id===id);
+ $('reqTo').textContent=`To: ${reqTarget.name} (${reqTarget.group}, ${reqTarget.city})`;
+ openM('reqModal');
+}
+function sendReq(e){
+ e.preventDefault();
+ reqs.push({from:session.name,phone:$('qPh').value,to:reqTarget.name+' ('+reqTarget.group+')',msg:$('qMsg').value});
+ save('ll_reqs',reqs);closeM('reqModal');e.target.reset();
+ toast('Request sent. The donor will be informed by admin.');return false;
+}
+function regDonor(e){
+ e.preventDefault();
+ donors.push({id:Date.now(),name:$('rName').value.trim(),age:+$('rAge').value,group:$('rG').value,city:$('rCity').value.trim(),phone:$('rPh').value,status:'pending'});
+ save('ll_donors',donors);e.target.reset();renderDonors();
+ toast('Registered. Waiting for admin verification.');return false;
+}
+
+/* camps */
+function renderCamps(){
+ const f=$('cF').value,list=CAMPS.filter(c=>!f||c.city===f);
+ $('campList').innerHTML=list.map((c,i)=>`
+  <div class="card camp"><div class="date">${c.d}<small>${c.m}</small></div>
+  <div><h3 style="margin:0">${c.name}</h3><p>${c.place}, ${c.city} · ${c.time}</p></div>
+  <button class="btn ghost sm" onclick="joinCamp('${c.name}')">Reserve slot</button></div>`).join('');
+}
+$('cF').innerHTML+=[...new Set(CAMPS.map(c=>c.city))].map(c=>`<option>${c}</option>`).join('');
+$('sCamps').textContent=CAMPS.length;
+function joinCamp(n){toast('Slot reserved for "'+n+'". See you there!')}
+function sendMsg(e){e.preventDefault();e.target.reset();toast('Message sent. We will reply soon.');return false}
+
+/* auth */
+let mode='login',role='user';
+function setTab(r){role=r;$('tabU').classList.toggle('on',r==='user');$('tabA').classList.toggle('on',r==='admin');if(r==='admin')mode='login';drawAuth()}
+function openAuth(m){mode=m||'login';drawAuth();openM('authModal')}
+function drawAuth(){
+ const su=mode==='signup'&&role==='user';
+ $('authTitle').textContent=role==='admin'?'Admin login':su?'Create account':'Log in';
+ $('authBtn').textContent=su?'Sign up':'Log in';
+ $('fName').style.display=su?'flex':'none';$('aName').required=su;
+ $('lUser').textContent=role==='admin'?'Username':'Email';
+ $('aUser').type=role==='admin'?'text':'email';
+ $('adminHint').style.display=role==='admin'?'block':'none';
+ $('authSwitch').innerHTML=role==='admin'?'':su?'Already have an account? <a href="#" onclick="mode=\'login\';drawAuth();return false">Log in</a>':'New here? <a href="#" onclick="mode=\'signup\';drawAuth();return false">Create an account</a>';
+}
+function doAuth(e){
+ e.preventDefault();
+ const u=$('aUser').value.trim(),p=$('aPass').value;
+ if(role==='admin'){
+  if(u==='admin'&&p==='admin123'){session={role:'admin',name:'Admin'}}else{toast('Wrong admin username or password.');return false}
+ }else if(mode==='signup'){
+  if(users.some(x=>x.email===u)){toast('This email is already registered. Please log in.');return false}
+  users.push({name:$('aName').value.trim(),email:u,pass:p});save('ll_users',users);
+  session={role:'user',name:$('aName').value.trim()};
+ }else{
+  const f=users.find(x=>x.email===u&&x.pass===p);
+  if(!f){toast('Wrong email or password. New user? Create an account.');return false}
+  session={role:'user',name:f.name};
+ }
+ save('ll_session',session);closeM('authModal');e.target.reset();drawNav();
+ toast('Welcome, '+session.name+'!');
+ if(session.role==='admin')openAdmin();
+ return false;
+}
+function logout(){session=null;save('ll_session',null);drawNav();toast('Logged out.')}
+function drawNav(){
+ $('authSlot').innerHTML=!session?'<button class="btn sm" onclick="openAuth(\'login\')">Login</button>'
+  :session.role==='admin'?'<button class="btn sm" onclick="openAdmin()">Admin panel</button> <button class="btn ghost sm" onclick="logout()">Logout</button>'
+  :`<span style="font-weight:700;padding:0 6px">Hi, ${esc(session.name.split(' ')[0])}</span><button class="btn ghost sm" onclick="logout()">Logout</button>`;
+}
+
+/* admin */
+function openAdmin(){drawAdmin();openM('adminModal')}
+function drawAdmin(){
+ $('aDonors').innerHTML=donors.map(d=>`<tr><td>${esc(d.name)}</td><td>${d.group}</td><td>${esc(d.city)}</td><td>${esc(d.phone)}</td>
+  <td><span class="tag ${d.status==='verified'?'':'p'}" style="margin:0">${d.status==='verified'?'Verified':'Pending'}</span></td>
+  <td>${d.status==='verified'?'':`<button class="btn sm" onclick="verify(${d.id})">Verify</button> `}<button class="btn ghost sm" onclick="removeD(${d.id})">Remove</button></td></tr>`).join('')||'<tr><td colspan="6">No donors yet.</td></tr>';
+ $('aReqs').innerHTML=reqs.map(r=>`<tr><td>${esc(r.from)}</td><td>${esc(r.phone)}</td><td>${esc(r.to)}</td><td>${esc(r.msg)}</td></tr>`).join('')||'<tr><td colspan="4">No requests yet.</td></tr>';
+}
+function verify(id){donors.find(d=>d.id===id).status='verified';save('ll_donors',donors);drawAdmin();renderDonors();toast('Donor verified.')}
+function removeD(id){donors=donors.filter(d=>d.id!==id);save('ll_donors',donors);drawAdmin();renderDonors();toast('Donor removed.')}
+
+drawNav();renderDonors();renderCamps();
+</script>
+</body>
+</html>
