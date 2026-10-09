@@ -226,10 +226,11 @@ th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}
   <div class="field" id="fName" style="display:none"><label for="aName">Full name</label><input id="aName"></div>
   <div class="field"><label for="aUser" id="lUser">Email</label><input id="aUser" required></div>
   <div class="field"><label for="aPass">Password</label><input id="aPass" type="password" minlength="4" required></div>
+  <label style="display:flex;gap:8px;font-weight:400;margin-bottom:14px"><input type="checkbox" style="width:auto" onchange="document.getElementById('aPass').type=this.checked?'text':'password'"> Show password</label>
   <button class="btn" style="width:100%" type="submit" id="authBtn">Log in</button>
  </form>
  <p style="margin-top:14px;font-size:.92rem;color:var(--mute)" id="authSwitch"></p>
- <p id="adminHint" style="display:none;margin-top:10px;font-size:.85rem;color:var(--mute)">Demo admin: <b>admin</b> / <b>admin123</b></p>
+ <p id="adminHint" style="display:none;margin-top:10px;font-size:.85rem;color:var(--mute)">Version 3 · Admin: <b>Nilam pandor</b> / <b>Nilu@26</b></p>
 </div></div>
 
 <!-- Contact request modal -->
@@ -370,9 +371,9 @@ function drawAuth(){
 }
 function doAuth(e){
  e.preventDefault();
- const u=$('aUser').value.trim(),p=$('aPass').value;
+ const u=$('aUser').value.trim().replace(/\s+/g,' '),p=$('aPass').value.trim();
  if(role==='admin'){
-  if(u==='admin'&&p==='admin123'){session={role:'admin',name:'Admin'}}else{toast('Wrong admin username or password.');return false}
+  if(u.toLowerCase()==='nilam pandor'&&p==='Nilu@26'){session={role:'admin',name:'Admin'}}else{toast('Wrong admin username or password.');return false}
  }else if(mode==='signup'){
   if(users.some(x=>x.email===u)){toast('This email is already registered. Please log in.');return false}
   users.push({name:$('aName').value.trim(),email:u,pass:p});save('ll_users',users);
@@ -406,6 +407,14 @@ function verify(id){donors.find(d=>d.id===id).status='verified';save('ll_donors'
 function removeD(id){donors=donors.filter(d=>d.id!==id);save('ll_donors',donors);drawAdmin();renderDonors();toast('Donor removed.')}
 
 drawNav();renderDonors();renderCamps();
+/* button-click submit (works even where normal form submit is blocked) */
+document.querySelectorAll('form').forEach(f=>{
+ const b=f.querySelector('button[type=submit]');if(!b)return;b.type='button';
+ const go=()=>{if(f.checkValidity())f.dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}));else f.reportValidity()};
+ b.addEventListener('click',go);
+ f.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'&&e.target.type!=='checkbox'){e.preventDefault();go()}});
+});
+window.addEventListener('error',e=>toast('Error: '+e.message));
 </script>
 </body>
 </html>
