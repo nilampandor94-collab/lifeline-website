@@ -215,7 +215,7 @@ th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}
  </form>
 </div></section>
 
-<footer><div class="wrap">🩸 LifeLine · College frontend project · Donate blood, save lives</div></footer>
+<footer><div class="wrap">🩸 LifeLine · College frontend project · Donate blood, save lives · v4</div></footer>
 
 <!-- Login modal -->
 <div class="modal" id="authModal"><div class="box">
@@ -230,7 +230,6 @@ th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}
   <button class="btn" style="width:100%" type="submit" id="authBtn">Log in</button>
  </form>
  <p style="margin-top:14px;font-size:.92rem;color:var(--mute)" id="authSwitch"></p>
- <p id="adminHint" style="display:none;margin-top:10px;font-size:.85rem;color:var(--mute)">Version 3 · Admin: <b>Nilam pandor</b> / <b>Nilu@26</b></p>
 </div></div>
 
 <!-- Contact request modal -->
@@ -366,7 +365,6 @@ function drawAuth(){
  $('fName').style.display=su?'flex':'none';$('aName').required=su;
  $('lUser').textContent=role==='admin'?'Username':'Email';
  $('aUser').type=role==='admin'?'text':'email';
- $('adminHint').style.display=role==='admin'?'block':'none';
  $('authSwitch').innerHTML=role==='admin'?'':su?'Already have an account? <a href="#" onclick="mode=\'login\';drawAuth();return false">Log in</a>':'New here? <a href="#" onclick="mode=\'signup\';drawAuth();return false">Create an account</a>';
 }
 function doAuth(e){
